@@ -7,9 +7,8 @@
 #include "Engine/DataTable.h"
 #include "ExistentialismBarGameInstance.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class DIALOGUEPROJECT_API UExistentialismBarGameInstance : public UGameInstance
 {
@@ -28,4 +27,7 @@ public:
 	//完成任务的声音
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestSubsystem | Sound", meta = (AllowPrivateAccess = "true"))
 	USoundCue* CompletedSound;
+
+public:
+	
 };

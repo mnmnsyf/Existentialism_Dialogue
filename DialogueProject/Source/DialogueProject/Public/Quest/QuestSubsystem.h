@@ -7,9 +7,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "QuestSubsystem.generated.h"
 
-/*DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FindItemFromInventory, int32, ItemID);
-UPROPERTY(BlueprintAssignable)
-FindItemFromInventory FindItem;*/
+//DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(int32, FGetItemInfoDelegate, int32);
 
 struct FQuestBase;
 
@@ -42,35 +40,67 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
 	void ReceiveQuest(int32 QuestID);
 
-	//提交任务
+	//完成任务
 	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
-	void SubmitQuest(int32 QuestID);
+	void CompleteQuest(int32 QuestID);
 
-	//领取任务奖励
+	//领取任务奖励，掉落奖励物品
 	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
-	void GetRewardQuest(int32 QuestID);
+	void GetQuestReward(int32 QuestID);
 
 	//通过任务id查找某个任务的信息
-	//UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
-	//FQuestBase FindQuestInfoByID(int32 QuestID);
-
-	 //获取当前所有已接收的任务给UI
 	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
-	TArray<FQuestBase> GetReceiveQuest();
+	FQuestBase GetQuestInfoByID(int32 QuestID);
 
-	 //获取当前所有已完成的任务给UI
+	//获取当前所有已接收的任务
 	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
-	TArray<FQuestBase> GetCompletedQuest();
+	TArray<FQuestBase> GetReceivedQuests();
+
+	//获取当前所有已完成的任务
+	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
+	TArray<FQuestBase> GetCompletedQuests();
+
+	//通过ItemID检查背包有多少这件物品
+	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
+	int32 GetItemNumByID(int32 ItemID);
+
+	//获取任务状态
+	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
+	EQuestState GetQuestState(int32 QuestID);
+
+	//修改任务状态
+	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | QuestGameInsSubsystem")
+	void SetQuestState(int32 QuestID, EQuestState NewState);
+
+	//NPC头顶提示任务图标
+	UFUNCTION(BlueprintCallable, Category = "QuestSubsystem | NPC")
+	void SetNPCQuestHintIcon();
 
 private:
-	TArray<FQuestBase> LockedQuests;
-	TArray<FQuestBase> UnlockedQuests;
+	//总任务数据表
+	TArray<FQuestBase> AllQuestsData;
+
+	////未解锁任务表
+	//TArray<int32> LockedQuests;
+
+	//已解锁任务表
+	//TArray<FQuestBase> UnlockedQuests;
+
+	//已接收任务表
 	TArray<FQuestBase> ReceivedQuests;
+
+	//已完成任务表
 	TArray<FQuestBase> CompletedQuests;
-	TArray<FQuestBase> GotRewardQuests;
+
+	////已领取奖励任务表
+	//TArray<int32> GotRewardQuests;
+
+	//杀怪记录表
+	//
 
 public:
-	
-	
+	/*UPROPERTY(BlueprintAssignable, Category = "QuestSubsystem | QuestGameInsSubsystem")
+	FGetItemInfoDelegate GetItemInfo;*/
 
+	
 };
